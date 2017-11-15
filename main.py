@@ -16,11 +16,12 @@ def get_html(url):
 
 
 def get_total_pages(html):
-    soup = BeautifulSoup
+    soup = BeautifulSoup(html, 'lxml')
 
+    pages = soup.find('div', class_='pagination-pages').find_all('a', class_='pagination-page')[-1]
 
 def main():
-    # https: // www.avito.ru / ryazan / noutbuki?q = macbook & sgtd = 2
+    # https://www.avito.ru/ryazan?s=101&sgtd=1&view=gallery&q=iphone+6
     pass
 
 if __name__ == '__main__':
