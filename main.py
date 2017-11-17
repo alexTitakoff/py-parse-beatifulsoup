@@ -1,7 +1,11 @@
+# coding=utf-8
 import requests
 from bs4 import BeautifulSoup
 import csv
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 
 
@@ -25,7 +29,7 @@ def get_total_pages(html):
 
 
 def write_csv(data):
-    with open('avito.csv', 'a', encoding='utf-8') as f:
+    with open('avito.csv', 'a') as f:
         writer = csv.writer(f)
 
         writer.writerow((
@@ -34,6 +38,7 @@ def write_csv(data):
             data['price'],
             data['date'],
         ))
+    # pass
 
 
 
@@ -43,7 +48,7 @@ def get_page_data(html):
 
     for ad in ads:
         # recieve title price url date
-        # print(ad.find('div', class_='created-date').text.strip())
+        print(ad.find('div', class_='created-date').text.strip())
         try:
             title = ad.find('h3').text.strip()
         except:
@@ -53,21 +58,22 @@ def get_page_data(html):
         except:
             url = ''
         try:
-            price = ad.find('div', class_='option price').text.strip()
+            price = ad.find('span', class_='option price').text.strip()
         except:
             price = ''
         try:
-            date = ad.find('div', class_='created-date').text.strip().replace('\xa0', ' ')
+            date = ad.find('div', class_='created-date').text.strip()
         except:
             date = ''
 
         data = {
-            'title' : title,
-            'url' : url,
-            'price' : price,
-            'date' : date,
+            'title': title,
+            'url': url,
+            'price': price,
+            'date': date,
         }
 
+        print data
         write_csv(data)
 
 
@@ -81,10 +87,11 @@ def main():
     query_part = '&q=iphone+6'
 
     total_pages = get_total_pages(get_html(url))
-    total_pagesExample = 3   # тестовые две страницы
+    # total_pagesExample = 3   # тестовые две страницы
 
-    for i in range(1,total_pagesExample):
+    for i in range(1,total_pages):
         url_gen = base_url + page_part + str(i) + middle_part + query_part
+        print('Cтраница' + str(i))
         print(url_gen)
         html = get_html(url_gen)
         get_page_data(html)
