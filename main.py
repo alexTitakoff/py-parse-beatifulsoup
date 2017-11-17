@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import csv
 
 
 
@@ -21,6 +22,19 @@ def get_total_pages(html):
     pages = soup.find('div', class_='pagination-pages').find_all('a', class_='pagination-page')[-1].get('href')
     total_pages = pages.split('=')
     return int(total_pages[1].split('&')[0])
+
+
+def write_csv(data):
+    with open('avito.csv', 'a', encoding='utf-8') as f:
+        writer = csv.writer(f)
+
+        writer.writerow((
+            data['title'],
+            data['url'],
+            data['price'],
+            data['date'],
+        ))
+
 
 
 def get_page_data(html):
@@ -54,7 +68,7 @@ def get_page_data(html):
             'date' : date,
         }
 
-        print(data)
+        write_csv(data)
 
 
 
