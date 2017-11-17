@@ -29,12 +29,13 @@ def get_page_data(html):
 
     for ad in ads:
         # recieve title price url date
+        # print(ad.find('div', class_='created-date').text.strip())
         try:
-            title = ad.find('div', class_='title').text.strip()
+            title = ad.find('h3').text.strip()
         except:
             title = ''
         try:
-            url = 'https://www.avito.ru' + ad.find('div', class_='title').find('a').get('href')
+            url = 'https://www.avito.ru' + ad.find('h3').find('a').get('href')
         except:
             url = ''
         try:
@@ -42,7 +43,7 @@ def get_page_data(html):
         except:
             price = ''
         try:
-            date = ad.find('div', class_='created-date').text.strip()
+            date = ad.find('div', class_='created-date').text.strip().replace('\xa0', ' ')
         except:
             date = ''
 
