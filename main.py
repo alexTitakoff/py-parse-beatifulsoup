@@ -24,8 +24,21 @@ def get_total_pages(html):
 
 
 def main():
-    # https://www.avito.ru/ryazan?s=101&sgtd=1&view=gallery&q=iphone+6
-    print(get_total_pages(get_html('https://www.avito.ru/ryazan?s=101&sgtd=1&view=gallery&q=iphone+6')))
+    # https://www.avito.ru/ryazan?p=1&s=101&sgtd=1&view=gallery&q=iphone+6
+    url = 'https://www.avito.ru/ryazan?p=1&s=101&sgtd=1&view=gallery&q=iphone+6'
+    base_url = 'https://www.avito.ru/ryazan?'
+    page_part = 'p='
+    middle_part = '&s=101&sgtd=1&view=gallery&' # промежуточные параметры
+    query_part = '&q=iphone+6'
+
+    total_pages = get_total_pages(get_html(url))
+
+    for i in range(1,total_pages):
+        url_gen = base_url + page_part + str(i) + middle_part + query_part
+        print(url_gen)
+
+
+
 
 if __name__ == '__main__':
     main()
