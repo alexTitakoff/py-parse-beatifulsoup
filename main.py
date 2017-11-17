@@ -23,6 +23,14 @@ def get_total_pages(html):
     return int(total_pages[1].split('&')[0])
 
 
+def get_page_data(html):
+    soup = BeautifulSoup(html, 'lxml')
+
+    ads = soup.find('div', class_='catalog-list').find_all('div', class_='item_gallery')
+    print(len(ads))
+
+
+
 def main():
     # https://www.avito.ru/ryazan?p=1&s=101&sgtd=1&view=gallery&q=iphone+6
     url = 'https://www.avito.ru/ryazan?p=1&s=101&sgtd=1&view=gallery&q=iphone+6'
@@ -32,10 +40,13 @@ def main():
     query_part = '&q=iphone+6'
 
     total_pages = get_total_pages(get_html(url))
+    total_pagesExample = 3   # тестовые две страницы
 
-    for i in range(1,total_pages):
+    for i in range(1,total_pagesExample):
         url_gen = base_url + page_part + str(i) + middle_part + query_part
         print(url_gen)
+        html = get_html(url_gen)
+        get_page_data(html)
 
 
 
