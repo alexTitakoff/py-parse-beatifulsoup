@@ -25,9 +25,35 @@ def get_total_pages(html):
 
 def get_page_data(html):
     soup = BeautifulSoup(html, 'lxml')
-
     ads = soup.find('div', class_='catalog-list').find_all('div', class_='item_gallery')
-    print(len(ads))
+
+    for ad in ads:
+        # recieve title price url date
+        try:
+            title = ad.find('div', class_='title').text.strip()
+        except:
+            title = ''
+        try:
+            url = 'https://www.avito.ru' + ad.find('div', class_='title').find('a').get('href')
+        except:
+            url = ''
+        try:
+            price = ad.find('div', class_='option price').text.strip()
+        except:
+            price = ''
+        try:
+            date = ad.find('div', class_='created-date').text.strip()
+        except:
+            date = ''
+
+        data = {
+            'title' : title,
+            'url' : url,
+            'price' : price,
+            'date' : date,
+        }
+
+        print(data)
 
 
 
